@@ -47,7 +47,7 @@
 
         methods: {
             handleValChange () {
-                console.log('change')
+                console.log('change');
             }
         }
     };
