@@ -56,7 +56,7 @@
             getUserPackages (username) {
                 return new Promise((resolve, reject) => {
                     // https://api.ido321.com/
-                    fetch(`http://localhost:9005/stars?username=${username}`).then(response => {
+                    fetch(`https://api.ido321.com/stars?username=${username}`).then(response => {
                         return response.json();
                     }).then((res) => {
                         if (res.code > 0) {
