@@ -171,8 +171,8 @@
                 if (response === false) response = cmd + ': command not found';
                 if (typeof response.then === 'function') {
                     response.then(function(res) {
-                        response = res.join('<br/>');
-                        output(response);
+						res = res.join(' ');
+                        output(res);
                         _inputLine.classList.remove('hidden');
                     })
                 } else {
