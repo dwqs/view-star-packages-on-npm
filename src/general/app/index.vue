@@ -51,6 +51,25 @@
         methods: {
             handleValChange () {
                 console.log('change');
+            },
+
+            getUserPackages (username) {
+                return new Promise((resolve, reject) => {
+                    fetch(`http://115.28.240.235/stars?username=${username}`).then(response => {
+                        return response.json();
+                    }).then((res) => {
+                        if (res.code > 0) {
+                            return resolve([res.error]);
+                        }
+                        if (!res.pkgs[0]) {
+                            resolve(['npm WARN stars user has not starred any packages']);
+                        } else {
+                            resolve(res.pkgs);
+                        }
+                    }, (e) => {
+                        resolve(['Maybe some error happened']);
+                    });
+                });
             }
         },
 
@@ -72,7 +91,6 @@
                                 const curTheme = this.terminal.getTheme();
                                 if (args && args[0]) {
                                     const param = args[0];
-                                    console.log('111', args);
                                     if (param === 'help') {
                                         return 'Alternative theme: interlaced, modern or white. run theme &lt;theme-name&gt; to change the theme';
                                     } else if (param.match(/^interlaced|modern|white$/)) {
@@ -89,11 +107,7 @@
                                 return '1.0.1';
                             case 'npm': 
                                 if (args && args.length === 2 && args[0] === 'stars') {
-                                    return new Promise((resolve, reject) => {
-                                        setTimeout(() => {
-                                            resolve(['112', '22']);
-                                        }, 2000);
-                                    });
+                                    return this.getUserPackages(args[1]);
                                 } else {
                                     return 'npm stars &lt;username&gt;';
                                 }
