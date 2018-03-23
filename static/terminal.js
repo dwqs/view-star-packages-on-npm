@@ -171,7 +171,6 @@
                 if (response === false) response = cmd + ': command not found';
                 if (typeof response.then === 'function') {
                     response.then(function(res) {
-                        console.log('response in promise\n', res.join('<br/>'));
                         response = res.join('<br/>');
                         output(response);
                         _inputLine.classList.remove('hidden');
