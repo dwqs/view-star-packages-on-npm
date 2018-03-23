@@ -11,7 +11,7 @@ module.exports = {
     },
     production: {
         assetsRoot: path.resolve(__dirname, '../dist'),
-        assetsPublicPath: '/',
+        assetsPublicPath: '/view-star-packages-on-npm/',
         assetsSubDirectory: 'static',
         prefix: '',
         productionSourceMap: true
