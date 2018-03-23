@@ -4,7 +4,7 @@
         <header>
             <h2>View your star packages on npmjs.com</h2>
         </header>
-        <div class="wrap-input">
+        <!-- <div class="wrap-input">
             <input type="text" placeholder="username on npmjs" v-model="username" @keydown.enter="handleValChange">
             <span :class="['search-btn', { 'disabled': disabled }]" @click="handleValChange">View</span>
         </div>
@@ -27,7 +27,8 @@
                 <li>1</li>
                 <li>2</li>
             </ul>
-        </div>
+        </div> -->
+        <div id="terminal" class="terminal"></div>
     </div>
 </template>
 
@@ -41,7 +42,8 @@
                 disabled: false,
                 packages: [1],
                 finded: false,
-                baseUrl: 'https://www.npmjs.com/package/'
+                baseUrl: 'https://www.npmjs.com/package/',
+                terminal: null
             };
         },
 
@@ -49,6 +51,53 @@
             handleValChange () {
                 console.log('change');
             }
+        },
+
+        mounted () {
+            this.$nextTick(() => {
+                this.terminal = new Terminal('terminal', {}, {
+                    execute: (cmd, args) => {
+                        switch (cmd) {
+                            case 'clear':
+                                this.terminal.clear();
+                                return '';
+                            case 'help':
+                                return 'Commands: clear, help, theme, ver or version';
+                            case 'theme': 
+                                const curTheme = this.terminal.getTheme();
+                                if (args && args[0]) {
+                                    const param = args[0];
+                                    console.log('111', args);
+                                    if (param === 'help') {
+                                        return 'Alternative theme: interlaced, modern or white. run theme theme-name to change the theme';
+                                    } else if (param.match(/^interlaced|modern|white$/)) {
+                                        this.terminal.setTheme(args[0]); 
+                                        return '';
+                                    } else {
+                                        return 'Invalid theme name';
+                                    }
+                                } else {
+                                    return `Run theme help to find alternative theme, and current theme is ${curTheme}`;
+                                }
+                            case 'ver':
+                            case 'version':
+                                return '1.0.1';
+                            case 'npm': 
+                                if (args && args.length === 2 && args[0] === 'stars') {
+                                    return new Promise((resolve, reject) => {
+                                        setTimeout(() => {
+                                            resolve(['112', '22']);
+                                        }, 2000);
+                                    });
+                                } else {
+                                    return 'npm stars &lt;username&gt;';
+                                }
+                            default:
+                                return false;
+                        } 
+                    }
+                });
+            });
         }
     };
 </script>
