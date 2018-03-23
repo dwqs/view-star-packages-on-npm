@@ -4,6 +4,7 @@
         <header>
             <h2>View your star packages on npmjs.com</h2>
         </header>
+        <p>Run the command: npm stars &lt;username&gt;</p>
         <!-- <div class="wrap-input">
             <input type="text" placeholder="username on npmjs" v-model="username" @keydown.enter="handleValChange">
             <span :class="['search-btn', { 'disabled': disabled }]" @click="handleValChange">View</span>
@@ -54,6 +55,10 @@
         },
 
         mounted () {
+            if (!window.Promise || !window.fetch) {
+                console.error('Your browser does not support Promise or Fetch.\n See supported browsers: https://caniuse.com');
+            }
+
             this.$nextTick(() => {
                 this.terminal = new Terminal('terminal', {}, {
                     execute: (cmd, args) => {
@@ -69,7 +74,7 @@
                                     const param = args[0];
                                     console.log('111', args);
                                     if (param === 'help') {
-                                        return 'Alternative theme: interlaced, modern or white. run theme theme-name to change the theme';
+                                        return 'Alternative theme: interlaced, modern or white. run theme &lt;theme-name&gt; to change the theme';
                                     } else if (param.match(/^interlaced|modern|white$/)) {
                                         this.terminal.setTheme(args[0]); 
                                         return '';
