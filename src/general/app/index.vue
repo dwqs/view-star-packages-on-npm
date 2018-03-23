@@ -55,7 +55,8 @@
 
             getUserPackages (username) {
                 return new Promise((resolve, reject) => {
-                    fetch(`https://api.ido321.com/stars?username=${username}`).then(response => {
+                    // https://api.ido321.com/
+                    fetch(`http://localhost:9005/stars?username=${username}`).then(response => {
                         return response.json();
                     }).then((res) => {
                         if (res.code > 0) {
@@ -64,7 +65,10 @@
                         if (!res.pkgs[0]) {
                             resolve(['npm WARN stars user has not starred any packages']);
                         } else {
-                            resolve(res.pkgs);
+                            const html = res.pkgs.map(pkg => {
+                                return `<a class="pkg-name" href="${this.baseUrl}${pkg}" target="_blank">${pkg}<a/>`;
+                            });
+                            resolve(html);
                         }
                     }, (e) => {
                         resolve(['Maybe some error happened']);
