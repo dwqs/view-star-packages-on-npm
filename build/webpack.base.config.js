@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const HappyPack = require('happypack');   
 
@@ -109,6 +110,16 @@ module.exports = {
             id: 'vue',
             loaders: ['vue-loader']
         })),
+
+        new CopyWebpackPlugin([
+            { 
+                context: '..', 
+                from: 'static/**/*', 
+                to: utils.resolve('dist'), 
+                force: true,
+                ignore: ['.*']
+            }
+        ]),
 
         // https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
